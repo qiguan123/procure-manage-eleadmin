@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.name" placeholder="Title" style="width: 200px;" class="filter-item" />
+      <el-input v-model="listQuery.name" placeholder="包名" style="width: 200px;" class="filter-item" />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         查询
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="go2Create">
         新增分包
       </el-button>
     </div>
@@ -19,12 +19,12 @@
     >
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
-          {{ scope.$index }}
+          {{ scope.row.id }}
         </template>
       </el-table-column>
       <el-table-column label="包名称">
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          <el-link type="primary" @click="go2Detail(scope.row.id)">{{ scope.row.name }}</el-link>
         </template>
       </el-table-column>
       <el-table-column label="包序号" align="center">
@@ -45,46 +45,6 @@
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="fetchData" />
-
-    <el-dialog title="新增分包" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="包名称" prop="name">
-          <el-input v-model="temp.name" />
-        </el-form-item>
-        <el-form-item label="包序号" prop="indexNumber">
-          <el-input v-model="temp.indexNumber" />
-        </el-form-item>
-        <el-form-item label="限价(万元)" prop="bidUpperLimit">
-          <el-input v-model="temp.bidUpperLimit" />
-        </el-form-item>
-        <el-form-item label="所属项目" prop="projectId">
-          <el-select v-model="temp.projectId" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in unstartedProjects" :key="item.id" :label="item.name" :value="item.id" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="与会专家" prop="expertIds">
-          <el-select v-model="temp.expertIds" multiple class="filter-item" placeholder="Please select">
-            <el-option v-for="item in experts" :key="item.id" :label="item.name" :value="item.id" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="应标单位" prop="bidderIds">
-          <el-select v-model="temp.bidderIds" multiple class="filter-item" placeholder="Please select">
-            <el-option v-for="item in bidders" :key="item.id" :label="item.name" :value="item.id" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="评分表" prop="gradeTable">
-          <el-input v-model="temp.gradeTable" type="file" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
-          取消
-        </el-button>
-        <el-button type="primary" @click="createPkg()">
-          确认
-        </el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -103,29 +63,7 @@ export default {
         page: 1,
         limit: 20,
         name: undefined
-      },
-      unstartedProjects: [],
-      experts: [],
-      bidders: [],
-      temp: {
-        name: '',
-        indexNumber: undefined,
-        bidUpperLimit: undefined,
-        projectId: undefined,
-        expertIds: [],
-        bidderIds: [],
-        gradeTable: undefined
-      },
-      dialogFormVisible: false,
-      rules: {
-        name: [{ required: true, message: 'name is required', trigger: 'change' }],
-        indexNumber: [{ required: true, message: 'indexNumber is required', trigger: 'change' }],
-        bidUpperLimit: [{ required: true, message: 'name is required', trigger: 'change' }],
-        projectId: [{ required: true, message: 'project is required', trigger: 'change' }],
-        expertIds: [{ required: true, message: 'expert is required', trigger: 'change' }],
-        bidderIds: [{ required: true, message: 'bidder is required', trigger: 'change' }],
-        gradeTable: [{ required: true, message: 'name is required', trigger: 'change' }]
-      }
+      },      
     }
   },
   created() {
@@ -144,27 +82,11 @@ export default {
       this.listQuery.page = 1
       this.fetchData()
     },
-    handleCreate() {
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
+    go2Create() {
+      this.$router.push('/pkg/edit')
     },
-    createPkg() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          addPkg(this.temp).then(() => {
-            this.list.unshift(this.temp)
-            this.dialogFormVisible = false
-            this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
+    go2Detail(pkgId) {
+      this.$router.push('/pkg/detail/' + pkgId)
     }
   }
 }

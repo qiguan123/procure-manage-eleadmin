@@ -15,3 +15,10 @@ export function addPkg(pkg) {
     data: pkg
   })
 }
+
+export function getById(id) {
+  return request({
+    url: '/pkg/' + id,
+    method: 'get'
+  })
+}

@@ -97,6 +97,20 @@ export const constantRoutes = [
         name: 'PkgList',
         component: () => import('@/views/pkg/index'),
         meta: { title: '分包列表', icon: 'table' }
+      },
+      {
+        path: 'detail/:id',
+        name: 'PkgDetail',
+        component: () => import('@/views/pkg/detail'),
+        meta: { title: '分包详情', icon: 'table' },
+        hidden: true
+      },
+      {
+        path: 'edit',
+        name: 'PkgEdit',
+        component: () => import('@/views/pkg/edit'),
+        meta: { title: '编辑分包', icon: 'table' },
+        hidden: true
       }
     ]
   },
