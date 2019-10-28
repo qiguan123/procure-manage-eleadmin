@@ -1,11 +1,37 @@
 <template>
   <div class="app-container">
-    <el-form ref="form" :model="pkg" label-width="80px">
-      <el-form-item label="12"> aaaa </el-form-item>
-      <el-form-item label="11"> aaaa </el-form-item>
-      <el-form-item label="22"> aaaa </el-form-item>
-      <el-form-item label="33333"> aaaa </el-form-item>
-    </el-form>
+    <div>
+      <strong>基本信息</strong>
+      <el-table :data="list" border fit highlight-current-row>
+        <el-table-column align="center" label="ID" width="95">
+          <template slot-scope="scope">
+            {{ scope.row.id }}
+          </template>
+        </el-table-column>
+        <el-table-column label="包名称">
+          <template slot-scope="scope">{{ scope.row.name }}</template>
+        </el-table-column>
+        <el-table-column label="包序号" align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.indexNumber }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="限价(万元)" align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.bidUpperLimit }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="所属项目" align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.projectName }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <div>
+      <strong>结果排名</strong>
+    </div>
+    <div>评分详情</div>
   </div>
 </template>
 
@@ -16,6 +42,8 @@ export default {
 
   data() {
     return {
+      list: null,
+      listLoading: true,
       pkg: null
     }
   },
@@ -24,10 +52,11 @@ export default {
   },
   methods: {
     fetchData() {
-      console.log(this.$route.params.id)
-      getById(1).then(response => {
+      getById(this.$route.params.id).then(response => {
         this.pkg = response.data
+        this.list = [this.pkg]
         console.log(this.pkg)
+        this.listLoading = false
       })
     }
   }

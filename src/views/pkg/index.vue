@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { getList, addPkg } from '@/api/pkg'
+import { getList } from '@/api/pkg'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
@@ -63,7 +63,7 @@ export default {
         page: 1,
         limit: 20,
         name: undefined
-      },      
+      }
     }
   },
   created() {

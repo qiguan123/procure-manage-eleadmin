@@ -15,3 +15,10 @@ export function addExpert(e) {
     data: e
   })
 }
+
+export function getAllExperts() {
+  return request({
+    url: '/expert/simple',
+    method: 'get'
+  })
+}

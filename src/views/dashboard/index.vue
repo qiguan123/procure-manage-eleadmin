@@ -1,18 +1,16 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">欢迎 {{ name }}</div>
+    <div class="dashboard-text">2019年共招标{{ cfrsCount }}次</div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   name: 'Dashboard',
-  computed: {
-    ...mapGetters([
-      'name'
-    ])
+  data() {
+    return {
+      cfrsCount: 21
+    }
   }
 }
 </script>

@@ -15,3 +15,10 @@ export function addBidder(b) {
     data: b
   })
 }
+
+export function getAllBidders() {
+  return request({
+    url: '/bidder/simple',
+    method: 'get'
+  })
+}

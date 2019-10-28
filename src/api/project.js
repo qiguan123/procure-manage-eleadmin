@@ -15,3 +15,10 @@ export function addProject(project) {
     data: project
   })
 }
+
+export function getUnstartedProjects() {
+  return request({
+    url: '/project/unstarted',
+    method: 'get'
+  })
+}

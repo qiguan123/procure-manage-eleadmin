@@ -8,11 +8,12 @@ export function getList(listQuery) {
   })
 }
 
-export function addPkg(pkg) {
+export function addPkg(formData) {
   return request({
     url: '/pkg',
     method: 'post',
-    data: pkg
+    data: formData,
+    headers: { 'Content-Type': 'multipart/form-data' }
   })
 }
 
