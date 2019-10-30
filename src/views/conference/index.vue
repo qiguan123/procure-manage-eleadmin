@@ -40,7 +40,7 @@
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="230">
         <template slot-scope="{row}">
-          <el-button v-if="row.state!=2" type="primary" size="mini" @click="startCfrs(row)">
+          <el-button v-if="row.state==0" type="primary" size="mini" @click="startCfrs(row)">
             开启会议
           </el-button>
           <el-button v-if="row.state==2" type="success" size="mini" @click="closeCfrs(row)">
@@ -133,12 +133,10 @@ export default {
       })
     },
     startCfrs(cfrs) {
-      startCfrsApi(cfrs.id)
-      this.fetchData()
+      startCfrsApi(cfrs.id).then(resp => this.fetchData())
     },
     closeCfrs(cfrs) {
-      closeCfrsApi(cfrs.id)
-      this.fetchData()
+      closeCfrsApi(cfrs.id).then(resp => this.fetchData())
     },
     handleFilter() {
       this.listQuery.page = 1
@@ -153,7 +151,6 @@ export default {
     createCfrs() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          console.log(this.temp)
           addCfrsApi(this.temp).then(() => {
             this.dialogFormVisible = false
             this.fetchData()
