@@ -17,16 +17,16 @@
       </el-form-item>
       <el-form-item label="与会专家" prop="expertIds">
         <el-checkbox-group v-model="temp.expertIds">
-          <el-checkbox v-for="item in experts" :key="item.id" :label="item.id">{{item.name}}</el-checkbox>
+          <el-checkbox v-for="item in experts" :key="item.id" :label="item.id">{{ item.name }}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item label="应标单位" prop="bidderIds">
         <el-checkbox-group v-model="temp.bidderIds">
-          <el-checkbox v-for="item in bidders" :key="item.id" :label="item.id">{{item.name}}</el-checkbox>
+          <el-checkbox v-for="item in bidders" :key="item.id" :label="item.id">{{ item.name }}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item label="评分表" prop="gradeTable">
-        <input ref="gradeTableFile" type="file" />
+        <input ref="gradeTableFile" type="file">
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="createPkg">立即创建</el-button>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { getById, addPkg } from '@/api/pkg'
+import { addPkg } from '@/api/pkg'
 import { getUnstartedProjects } from '@/api/project'
 import { getAllExperts } from '@/api/expert'
 import { getAllBidders } from '@/api/bidder'
@@ -52,7 +52,7 @@ export default {
       }
     }
     var bidUpperLimitCheck = (rule, value, callback) => {
-      let n = new Number(value)
+      const n = Number(value)
       if (n instanceof Number && n >= 0) {
         callback()
       } else {

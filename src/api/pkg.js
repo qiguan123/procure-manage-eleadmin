@@ -17,9 +17,9 @@ export function addPkg(formData) {
   })
 }
 
-export function getById(id) {
+export function getDetailById(id) {
   return request({
-    url: '/pkg/' + id,
+    url: '/pkg/detail/' + id,
     method: 'get'
   })
 }
