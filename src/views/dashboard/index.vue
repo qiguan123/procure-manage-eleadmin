@@ -5,8 +5,19 @@
 </template>
 
 <script>
+import { getClosedCfrsList } from '@/api/conference'
 export default {
   name: 'Dashboard',
+  created() {
+    this.fetchData()
+  },
+  methods: {
+    fetchData() {
+      getClosedCfrsList().then(response => {
+        this.cfrsCount = response.data.length
+      })
+    }
+  },
   data() {
     return {
       cfrsCount: 21

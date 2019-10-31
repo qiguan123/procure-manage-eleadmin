@@ -39,7 +39,7 @@
       <el-table :data="finalResultList" border fit highlight-current-row>
         <el-table-column align="center" label="排名" width="95">
           <template slot-scope="scope">
-            {{ scope.$index }}
+            {{ scope.$index + 1}}
           </template>
         </el-table-column>
         <el-table-column label="应标单位">

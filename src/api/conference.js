@@ -36,3 +36,10 @@ export function getPreparedCfrsList() {
     method: 'get'
   })
 }
+
+export function getClosedCfrsList() {
+  return request({
+    url: '/cfrs/closed',
+    method: 'get'
+  })
+}
