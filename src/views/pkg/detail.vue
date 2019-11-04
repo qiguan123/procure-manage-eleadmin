@@ -27,10 +27,10 @@
           </template>
         </el-table-column>
         <el-table-column label="应标单位" align="center">
-          <el-tag v-for="b in bidders" :key="b.id">{{ b.name }}</el-tag>
+          <el-tag v-for="b in bidders" :key="b.id" type="info">{{ b.name }}</el-tag>
         </el-table-column>
         <el-table-column label="专家" align="center">
-          <el-tag v-for="e in experts" :key="e.id">{{ e.name }}</el-tag>
+          <el-tag v-for="e in experts" :key="e.id" type="info">{{ e.name }}</el-tag>
         </el-table-column>
       </el-table>
     </div>
@@ -39,7 +39,7 @@
       <el-table :data="finalResultList" border fit highlight-current-row>
         <el-table-column align="center" label="排名" width="95">
           <template slot-scope="scope">
-            {{ scope.$index + 1}}
+            {{ scope.$index + 1 }}
           </template>
         </el-table-column>
         <el-table-column label="应标单位">
@@ -55,7 +55,10 @@
             <span>{{ scope.row.finalScore }}</span>
           </template>
         </el-table-column>
-        <el-table-column v-for="(expert, index) in experts" :key="expert.id" :label="expert.name">
+        <el-table-column v-for="(expert, index) in experts" :key="expert.id" :label="expert.name" align="center">
+          <template slot="header" slot-scope="scope">
+            <el-link type="primary" @click="go2ExpertScoreDetail(expert.id)">{{ scope.column.label }}</el-link>
+          </template>
           <template slot-scope="scope">
             <span>{{ scope.row.expertScores[index] }}</span>
           </template>
@@ -91,6 +94,9 @@ export default {
         this.experts = response.data.experts
         this.bidders = response.data.bidders
       })
+    },
+    go2ExpertScoreDetail(expertId) {
+      this.$router.push('/pkg/' + this.pkgId + '/detail/expert/' + expertId)
     }
   }
 }

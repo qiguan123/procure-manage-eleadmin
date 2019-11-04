@@ -111,6 +111,13 @@ export const constantRoutes = [
         component: () => import('@/views/pkg/edit'),
         meta: { title: '编辑分包', icon: 'table' },
         hidden: true
+      },
+      {
+        path: ':id/detail/expert/:expertId',
+        name: 'PkgExpertDetail',
+        component: () => import('@/views/pkg/expertScoreDetail'),
+        meta: { title: '专家评分详情', icon: 'table' },
+        hidden: true
       }
     ]
   },

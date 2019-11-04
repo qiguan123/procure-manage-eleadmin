@@ -8,6 +8,11 @@
 import { getClosedCfrsList } from '@/api/conference'
 export default {
   name: 'Dashboard',
+  data() {
+    return {
+      cfrsCount: 21
+    }
+  },
   created() {
     this.fetchData()
   },
@@ -16,11 +21,6 @@ export default {
       getClosedCfrsList().then(response => {
         this.cfrsCount = response.data.length
       })
-    }
-  },
-  data() {
-    return {
-      cfrsCount: 21
     }
   }
 }

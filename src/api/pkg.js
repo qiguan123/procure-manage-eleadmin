@@ -23,3 +23,10 @@ export function getDetailById(id) {
     method: 'get'
   })
 }
+
+export function getPkgExpertScoreDetail(pkgId, expertId) {
+  return request({
+    url: '/pkg/' + pkgId + '/expert/' + expertId + '/score',
+    method: 'get'
+  })
+}
