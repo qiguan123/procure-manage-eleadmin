@@ -17,12 +17,12 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="ID" width="95">
+      <el-table-column align="center" label="ID" width="60">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="专家姓名">
+      <el-table-column label="专家姓名" width="100">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
@@ -30,6 +30,11 @@
       <el-table-column label="单位名称" align="center">
         <template slot-scope="scope">
           {{ scope.row.orgnization }}
+        </template>
+      </el-table-column>
+      <el-table-column label="职称" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.title }}
         </template>
       </el-table-column>
       <el-table-column label="手机" align="center">
@@ -57,11 +62,18 @@
           {{ scope.row.idCard }}
         </template>
       </el-table-column>
+      <el-table-column fixed="right" label="操作" width="100">
+        <template slot-scope="{row}">
+          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+            编辑
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="fetchData" />
 
-    <el-dialog title="新增专家" :visible.sync="dialogFormVisible">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="专家姓名" prop="name">
           <el-input v-model="temp.name" />
@@ -92,7 +104,7 @@
         <el-button @click="dialogFormVisible = false">
           取消
         </el-button>
-        <el-button type="primary" @click="createExpert()">
+        <el-button type="primary" @click="dialogStatus==='create'?createExpert():updateExpert()">
           确认
         </el-button>
       </div>
@@ -101,7 +113,7 @@
 </template>
 
 <script>
-import { getList, addExpert } from '@/api/expert'
+import { getList, addOrUpdateExpert } from '@/api/expert'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
@@ -116,16 +128,12 @@ export default {
         limit: 20,
         name: undefined
       },
-      temp: {
-        name: '',
-        title: '',
-        orgnization: '',
-        mobilePhone: '',
-        officePhone: '',
-        bankCard: '',
-        bankName: '',
-        idCard: ''
+      dialogStatus: '',
+      textMap: {
+        update: 'Edit',
+        create: 'Create'
       },
+      temp: {},
       dialogFormVisible: false,
       rules: {
         name: [{ required: true, message: 'name is required', trigger: 'change' }]
@@ -149,6 +157,8 @@ export default {
       this.fetchData()
     },
     handleCreate() {
+      this.temp = {}
+      this.dialogStatus = 'create'
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -157,19 +167,44 @@ export default {
     createExpert() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          addExpert(this.temp).then(() => {
+          addOrUpdateExpert(this.temp).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
-              message: 'Created Successfully',
+              message: '添加成功',
               type: 'success',
               duration: 2000
             })
           })
         }
       })
-    }
+    },
+    handleUpdate(row) {
+      //this.temp = Object.assign({}, row) // copy obj
+      this.temp = row
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    updateExpert() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          //const tempData = Object.assign({}, this.temp)
+          addOrUpdateExpert(this.temp).then(() => {
+            this.dialogFormVisible = false
+            this.$notify({
+              title: 'Success',
+              message: '更新成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
+      })
+    },
   }
 }
 </script>

@@ -8,7 +8,7 @@ export function getList(listQuery) {
   })
 }
 
-export function addExpert(e) {
+export function addOrUpdateExpert(e) {
   return request({
     url: '/expert',
     method: 'post',

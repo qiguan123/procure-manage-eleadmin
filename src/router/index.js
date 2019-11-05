@@ -66,7 +66,7 @@ export const constantRoutes = [
         path: 'list',
         name: 'ConferenceList',
         component: () => import('@/views/conference/index'),
-        meta: { title: '会议列表', icon: 'table' }
+        meta: { title: '会议列表', icon: 'cfrsmanage' }
       }
     ]
   },
@@ -81,7 +81,7 @@ export const constantRoutes = [
         path: 'list',
         name: 'ProjectList',
         component: () => import('@/views/project/index'),
-        meta: { title: '项目列表', icon: 'table' }
+        meta: { title: '项目列表', icon: 'project' }
       }
     ]
   },
@@ -96,7 +96,7 @@ export const constantRoutes = [
         path: 'list',
         name: 'PkgList',
         component: () => import('@/views/pkg/index'),
-        meta: { title: '分包列表', icon: 'table' }
+        meta: { title: '分包列表', icon: 'pkg' }
       },
       {
         path: 'detail/:id',
@@ -132,7 +132,7 @@ export const constantRoutes = [
         path: 'list',
         name: 'ExpertList',
         component: () => import('@/views/expert/index'),
-        meta: { title: '专家列表', icon: 'table' }
+        meta: { title: '专家列表', icon: 'expert' }
       }
     ]
   },
@@ -147,7 +147,7 @@ export const constantRoutes = [
         path: 'list',
         name: 'BidderList',
         component: () => import('@/views/bidder/index'),
-        meta: { title: '应标单位列表', icon: 'table' }
+        meta: { title: '应标单位列表', icon: 'bidder' }
       }
     ]
   },

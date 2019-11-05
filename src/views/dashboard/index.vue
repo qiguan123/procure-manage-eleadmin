@@ -1,16 +1,38 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">2019年共招标{{ cfrsCount }}次</div>
+    <div class="dashboard-text">2019年招标</div>
+    <el-row :gutter="40">
+      <el-col :span="6">
+        <el-card shadow="hover">
+          会议{{ statistic.cfrsCount }}次
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card shadow="hover">
+          项目{{ statistic.projectCount }}个
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card shadow="hover">
+          分包{{ statistic.pkgCount }}个
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card shadow="hover">
+          招标金额{{ statistic.bidUpperLimit }}万元
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-import { getClosedCfrsList } from '@/api/conference'
+import { getStatistc } from '@/api/statistic'
 export default {
   name: 'Dashboard',
   data() {
     return {
-      cfrsCount: 21
+      statistic: {}
     }
   },
   created() {
@@ -18,8 +40,8 @@ export default {
   },
   methods: {
     fetchData() {
-      getClosedCfrsList().then(response => {
-        this.cfrsCount = response.data.length
+      getStatistc().then(response => {
+        this.statistic = response.data
       })
     }
   }
