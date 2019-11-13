@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+    <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 500px; margin-left:50px;">
       <el-form-item label="包名称" prop="name">
         <el-input v-model="temp.name" />
       </el-form-item>
@@ -11,19 +11,19 @@
         <el-input v-model="temp.bidUpperLimit" />
       </el-form-item>
       <el-form-item label="所属项目" prop="projectId">
-        <el-select v-model="temp.projectId" class="filter-item" placeholder="Please select">
+        <el-select v-model="temp.projectId" placeholder="Please select" style="width: 400px;">
           <el-option v-for="item in unstartedProjects" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="与会专家" prop="expertIds">
-        <el-checkbox-group v-model="temp.expertIds">
-          <el-checkbox v-for="item in experts" :key="item.id" :label="item.id">{{ item.name }}</el-checkbox>
-        </el-checkbox-group>
+        <el-select v-model="temp.expertIds" multiple filterable clearable :filter-method="expertSelectFilter" placeholder="Please select" style="width: 400px;">
+          <el-option v-for="item in experts" :key="item.id" :label="item.name" :value="item.id" />
+        </el-select>
       </el-form-item>
       <el-form-item label="应标单位" prop="bidderIds">
-        <el-checkbox-group v-model="temp.bidderIds">
-          <el-checkbox v-for="item in bidders" :key="item.id" :label="item.id">{{ item.name }}</el-checkbox>
-        </el-checkbox-group>
+        <el-select v-model="temp.bidderIds" multiple filterable clearable :filter-method="bidderSelectFilter" placeholder="Please select" style="width: 400px;">
+          <el-option v-for="item in bidders" :key="item.id" :label="item.name" :value="item.id" />
+        </el-select>
       </el-form-item>
       <el-form-item label="评分表" prop="gradeTable">
         <input ref="gradeTableFile" type="file">
@@ -72,6 +72,8 @@ export default {
       unstartedProjects: [],
       experts: [],
       bidders: [],
+      allExperts: [],
+      allBidders: [],
       rules: {
         name: [{ required: true, message: 'name is required', trigger: 'blur' }],
         indexNumber: [{ required: true, message: 'indexNumber is required', trigger: 'blur' }],
@@ -91,8 +93,9 @@ export default {
       axios.all([getUnstartedProjects(), getAllExperts(), getAllBidders()]).then(
         axios.spread((projectsResp, expertsResp, biddersResp) => {
           this.unstartedProjects = projectsResp.data
-          this.experts = expertsResp.data
-          this.bidders = biddersResp.data
+          this.allExperts = expertsResp.data
+          this.allBidders = biddersResp.data
+          this.experts = this.expertSelectFilter()
         })
       )
     },
@@ -114,7 +117,27 @@ export default {
           })
         }
       })
-    }
+    },
+    expertSelectFilter(query = '') {
+      let arr = this.allExperts.filter((item) => {
+        return item.name.includes(query)
+      })
+      if (arr.length > 10) {
+        this.experts = arr.slice(0, 10)
+      } else {
+        this.experts = arr
+      }
+    },
+    bidderSelectFilter(query = '') {
+      let arr = this.allBidders.filter((item) => {
+        return item.name.includes(query)
+      })
+      if (arr.length > 10) {
+        this.bidders = arr.slice(0, 10)
+      } else {
+        this.bidders = arr
+      }
+    },
   }
 }
 </script>
