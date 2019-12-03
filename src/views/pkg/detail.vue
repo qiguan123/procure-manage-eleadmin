@@ -72,7 +72,6 @@
 import { getDetailById } from '@/api/pkg'
 
 export default {
-
   data() {
     return {
       baseInfoList: [],

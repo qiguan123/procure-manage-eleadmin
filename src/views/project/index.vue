@@ -125,8 +125,8 @@ export default {
             this.fetchData()
             this.dialogFormVisible = false
             this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
+              title: '成功',
+              message: '项目创建成功',
               type: 'success',
               duration: 2000
             })

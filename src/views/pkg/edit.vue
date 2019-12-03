@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 500px; margin-left:50px;">
+    <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 520px; margin-left:50px;">
       <el-form-item label="包名称" prop="name">
         <el-input v-model="temp.name" />
       </el-form-item>
@@ -28,6 +28,16 @@
       <el-form-item label="评分表" prop="gradeTable">
         <input ref="gradeTableFile" type="file">
       </el-form-item>
+      <el-form-item label="价格评分方式" prop="priceStandardType">
+        <el-radio-group v-model="temp.priceStandardType">
+          <el-radio :label="1">平均值法</el-radio>
+          <el-radio :label="2">最低价法</el-radio>
+        </el-radio-group>
+        <div v-if="temp.priceStandardType === 1">
+          <div>高于平均价1%扣除<el-input v-model="temp.higherDeduction" style="width: 80px" />分</div>
+          <div>低于平均价1%扣除<el-input v-model="temp.lowerDeduction" style="width: 80px" />分</div>
+        </div>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="createPkg">立即创建</el-button>
       </el-form-item>
@@ -53,7 +63,7 @@ export default {
     }
     var bidUpperLimitCheck = (rule, value, callback) => {
       const n = Number(value)
-      if (n instanceof Number && n >= 0) {
+      if (n >= 0) {
         callback()
       } else {
         callback(new Error('请输入不小于0的数值'))
@@ -67,7 +77,10 @@ export default {
         projectId: undefined,
         expertIds: [],
         bidderIds: [],
-        gradeTable: undefined
+        gradeTable: undefined,
+        priceStandardType: 1,
+        higherDeduction: 1,
+        lowerDeduction: 0.8
       },
       unstartedProjects: [],
       experts: [],
@@ -81,7 +94,8 @@ export default {
         projectId: [{ required: true, message: 'project is required', trigger: 'blur' }],
         expertIds: [{ required: true, message: 'expert is required', trigger: 'blur' }],
         bidderIds: [{ required: true, message: 'bidder is required', trigger: 'blur' }],
-        gradeTable: [{ validator: gradeTableFileCheck, required: true, trigger: 'blur' }]
+        gradeTable: [{ validator: gradeTableFileCheck, required: true, trigger: 'blur' }],
+        priceStandardType: [{ required: true, message: 'priceStandardType is required', trigger: 'blur' }]
       }
     }
   },
@@ -109,8 +123,8 @@ export default {
           addPkg(formData).then(() => {
             this.$router.push('/pkg/list')
             this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
+              title: '成功',
+              message: '分包创建成功',
               type: 'success',
               duration: 2000
             })
@@ -119,7 +133,7 @@ export default {
       })
     },
     expertSelectFilter(query = '') {
-      let arr = this.allExperts.filter((item) => {
+      const arr = this.allExperts.filter((item) => {
         return item.name.includes(query)
       })
       if (arr.length > 10) {
@@ -129,7 +143,7 @@ export default {
       }
     },
     bidderSelectFilter(query = '') {
-      let arr = this.allBidders.filter((item) => {
+      const arr = this.allBidders.filter((item) => {
         return item.name.includes(query)
       })
       if (arr.length > 10) {
@@ -137,7 +151,7 @@ export default {
       } else {
         this.bidders = arr
       }
-    },
+    }
   }
 }
 </script>

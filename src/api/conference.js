@@ -43,3 +43,10 @@ export function getClosedCfrsList() {
     method: 'get'
   })
 }
+
+export function getOngoingCfrsList() {
+  return request({
+    url: '/cfrs/ongoing',
+    method: 'get'
+  })
+}

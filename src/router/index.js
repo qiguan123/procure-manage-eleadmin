@@ -71,6 +71,49 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/operate',
+    component: Layout,
+    redirect: '/operate/ongoing',
+    name: 'CfrsOperate',
+    meta: { title: '会务管理', icon: 'cfrsOngoing' },
+    children: [
+      {
+        path: 'ongoing',
+        name: 'ConferenceOngoingList',
+        component: () => import('@/views/conference/ongoing'),
+        meta: { title: '会务管理', icon: 'cfrsOngoing' }
+      },
+      {
+        path: ':id/pkg',
+        name: 'CfrsPkgList',
+        component: () => import('@/views/conference/pkgsOnCfrs'),
+        meta: { title: '会议分包', icon: 'pkg' },
+        hidden: true
+      },
+      {
+        path: 'pkg/:id/final',
+        name: 'PkgFinal',
+        component: () => import('@/views/conference/pkgFinal'),
+        meta: { title: '总分排名', icon: 'pkg' },
+        hidden: true
+      },
+      {
+        path: 'pkg/:id/price',
+        name: 'PkgPrice',
+        component: () => import('@/views/conference/pkgPrice'),
+        meta: { title: '价格评分', icon: 'pkg' },
+        hidden: true
+      },
+      {
+        path: 'pkg/:id/waiting',
+        name: 'PkgWaiting',
+        component: () => import('@/views/conference/pkgWaiting'),
+        meta: { title: '评分过程', icon: 'pkg' },
+        hidden: true
+      }
+    ]
+  },
+  {
     path: '/project',
     component: Layout,
     redirect: '/project/list',

@@ -17,6 +17,15 @@ export function addPkg(formData) {
   })
 }
 
+// 会务管理
+export function getById(pkgId) {
+  return request({
+    url: '/pkg/' + pkgId + '/score',
+    method: 'get'
+  })
+}
+
+// 结果查询
 export function getDetailById(id) {
   return request({
     url: '/pkg/detail/' + id,
@@ -28,5 +37,20 @@ export function getPkgExpertScoreDetail(pkgId, expertId) {
   return request({
     url: '/pkg/' + pkgId + '/expert/' + expertId + '/score',
     method: 'get'
+  })
+}
+
+export function getPkgsByCfrsId(cfrsId) {
+  return request({
+    url: '/pkg/priceWithScore?cfrsId=' + cfrsId,
+    method: 'get'
+  })
+}
+
+export function setPkgPrices(pkgId, prices) {
+  return request({
+    url: '/pkg/' + pkgId + '/price/score',
+    method: 'post',
+    data: prices
   })
 }

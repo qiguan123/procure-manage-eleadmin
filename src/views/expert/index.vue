@@ -181,7 +181,7 @@ export default {
       })
     },
     handleUpdate(row) {
-      //this.temp = Object.assign({}, row) // copy obj
+      // this.temp = Object.assign({}, row) // copy obj
       this.temp = row
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -192,7 +192,7 @@ export default {
     updateExpert() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          //const tempData = Object.assign({}, this.temp)
+          // const tempData = Object.assign({}, this.temp)
           addOrUpdateExpert(this.temp).then(() => {
             this.dialogFormVisible = false
             this.$notify({

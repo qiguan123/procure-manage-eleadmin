@@ -33,6 +33,11 @@
           <span v-if="scope.row.startTime">{{ scope.row.startTime | parseTime }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="会议地址">
+        <template slot-scope="scope">
+          {{ scope.row.address }}
+        </template>
+      </el-table-column>
       <el-table-column class-name="status-col" label="状态" width="110" align="center">
         <template slot-scope="scope">
           <el-tag :type="scope.row.state | statusFilter">{{ scope.row.state | statusNameFilter }}</el-tag>
@@ -92,8 +97,8 @@ export default {
     statusNameFilter(state) {
       const statusNameMap = {
         0: '新建会议',
-        1: '会议完成',
-        2: '会议启动'
+        1: '已结束',
+        2: '进行中'
       }
       return statusNameMap[state]
     },
@@ -133,10 +138,22 @@ export default {
       })
     },
     startCfrs(cfrs) {
-      startCfrsApi(cfrs.id).then(resp => this.fetchData())
+      this.$confirm('请确认是否已经关联项目和分包, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        startCfrsApi(cfrs.id).then(resp => this.fetchData())
+      }).catch(() => {})
     },
     closeCfrs(cfrs) {
-      closeCfrsApi(cfrs.id).then(resp => this.fetchData())
+      this.$confirm('请确认会议已经结束, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        closeCfrsApi(cfrs.id).then(resp => this.fetchData())
+      }).catch(() => {})
     },
     handleFilter() {
       this.listQuery.page = 1
@@ -163,6 +180,9 @@ export default {
           })
         }
       })
+    },
+    go2HostPkgsPrice(pkgId) {
+      this.$router.push('/cfrs/' + pkgId + '/price')
     }
   }
 }
